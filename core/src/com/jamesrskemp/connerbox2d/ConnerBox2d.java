@@ -2,6 +2,7 @@ package com.jamesrskemp.connerbox2d;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -40,7 +41,7 @@ public class ConnerBox2d extends ApplicationAdapter {
 		world = new World(new Vector2(0, -9.8f), false);
 		box2dRenderer = new Box2DDebugRenderer();
 
-		player = createBox(64, 128, 32, 32, false);
+		player = createBox(32, 128, 32, 32, false);
 		platform = createBox(32, 32, 64, 32, true);
 
 //		batch = new SpriteBatch();
@@ -77,7 +78,26 @@ public class ConnerBox2d extends ApplicationAdapter {
 		// 6 and 2 seem to be the standard for these.
 		world.step(1 / 60f, 6, 2);
 
+		inputUpdate(deltaTime);
 		cameraUpdate(deltaTime);
+	}
+
+	public void inputUpdate(float deltaTime) {
+		int horizontalForce = 0;
+
+		if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+			horizontalForce -= 1;
+		}
+
+		if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+			horizontalForce += 1;
+		}
+
+		if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+			player.applyForceToCenter(0, 300, false);
+		}
+
+		player.setLinearVelocity(horizontalForce * 5, player.getLinearVelocity().y);
 	}
 
 	public void cameraUpdate(float deltaTime) {
@@ -97,7 +117,7 @@ public class ConnerBox2d extends ApplicationAdapter {
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = isStatic ? BodyDef.BodyType.StaticBody : BodyDef.BodyType.DynamicBody;
 		bodyDef.position.set(x / Constants.PPM, y / Constants.PPM);
-		bodyDef.fixedRotation = false;
+		bodyDef.fixedRotation = true;
 
 		body = world.createBody(bodyDef);
 
