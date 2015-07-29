@@ -23,7 +23,7 @@ public class ConnerBox2d extends ApplicationAdapter {
 	World world;
 	Box2DDebugRenderer box2dRenderer;
 
-	Body player;
+	Body player, platform;
 
 	SpriteBatch batch;
 	Texture img;
@@ -40,7 +40,8 @@ public class ConnerBox2d extends ApplicationAdapter {
 		world = new World(new Vector2(0, -9.8f), false);
 		box2dRenderer = new Box2DDebugRenderer();
 
-		player = createPlayer();
+		player = createBox(32, 128, 32, 32, false);
+		platform = createBox(32, 32, 64, 32, true);
 
 //		batch = new SpriteBatch();
 //		img = new Texture("badlogic.jpg");
@@ -90,19 +91,19 @@ public class ConnerBox2d extends ApplicationAdapter {
 //		Gdx.app.log(TAG, "Camera position " + camera.position);
 	}
 
-	public Body createPlayer() {
+	public Body createBox(float x, float y, int width, int height, boolean isStatic) {
 		Body body;
 
 		BodyDef bodyDef = new BodyDef();
-		bodyDef.type = BodyDef.BodyType.DynamicBody;
-		bodyDef.position.set(100, 100);
+		bodyDef.type = isStatic ? BodyDef.BodyType.StaticBody : BodyDef.BodyType.DynamicBody;
+		bodyDef.position.set(x / Constants.PPM, y / Constants.PPM);
 		bodyDef.fixedRotation = true;
 
 		body = world.createBody(bodyDef);
 
 		PolygonShape shape = new PolygonShape();
 		// Box2D will double what we pass for the size.
-		shape.setAsBox(32 / 2 / Constants.PPM, 32 / 2 / Constants.PPM);
+		shape.setAsBox(width / 2 / Constants.PPM, height / 2 / Constants.PPM);
 
 		body.createFixture(shape, 1.0f);
 
