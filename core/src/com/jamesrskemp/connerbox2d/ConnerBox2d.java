@@ -117,7 +117,7 @@ public class ConnerBox2d extends ApplicationAdapter {
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = isStatic ? BodyDef.BodyType.StaticBody : BodyDef.BodyType.DynamicBody;
 		bodyDef.position.set(x / Constants.PPM, y / Constants.PPM);
-		bodyDef.fixedRotation = true;
+		bodyDef.fixedRotation = false;
 
 		body = world.createBody(bodyDef);
 
