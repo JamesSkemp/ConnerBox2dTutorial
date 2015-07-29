@@ -40,7 +40,7 @@ public class ConnerBox2d extends ApplicationAdapter {
 		world = new World(new Vector2(0, -9.8f), false);
 		box2dRenderer = new Box2DDebugRenderer();
 
-		player = createBox(32, 128, 32, 32, false);
+		player = createBox(64, 128, 32, 32, false);
 		platform = createBox(32, 32, 64, 32, true);
 
 //		batch = new SpriteBatch();
@@ -97,7 +97,7 @@ public class ConnerBox2d extends ApplicationAdapter {
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = isStatic ? BodyDef.BodyType.StaticBody : BodyDef.BodyType.DynamicBody;
 		bodyDef.position.set(x / Constants.PPM, y / Constants.PPM);
-		bodyDef.fixedRotation = true;
+		bodyDef.fixedRotation = false;
 
 		body = world.createBody(bodyDef);
 
