@@ -26,6 +26,8 @@ public class ConnerBox2d extends ApplicationAdapter {
 
 	Body player, platform;
 
+	int fakeCameraZoom = 2;
+
 	SpriteBatch batch;
 	Texture img;
 	
@@ -36,7 +38,7 @@ public class ConnerBox2d extends ApplicationAdapter {
 
 		camera = new OrthographicCamera();
 		// Wants a zoomed in view.
-		camera.setToOrtho(false, w / 2, h / 2);
+		camera.setToOrtho(false, w / fakeCameraZoom, h / fakeCameraZoom);
 
 		world = new World(new Vector2(0, -9.8f), false);
 		box2dRenderer = new Box2DDebugRenderer();
@@ -64,7 +66,7 @@ public class ConnerBox2d extends ApplicationAdapter {
 	@Override
 	public void resize(int width, int height) {
 		super.resize(width, height);
-		camera.setToOrtho(false, width / 2, height / 2);
+		camera.setToOrtho(false, width / fakeCameraZoom, height / fakeCameraZoom);
 	}
 
 	@Override
