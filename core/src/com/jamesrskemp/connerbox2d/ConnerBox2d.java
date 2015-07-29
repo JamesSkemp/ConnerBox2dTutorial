@@ -26,7 +26,7 @@ public class ConnerBox2d extends ApplicationAdapter {
 
 	Body player, platform;
 
-	int fakeCameraZoom = 2;
+	float fakeCameraZoom = 1.5f;
 
 	SpriteBatch batch;
 	Texture img;
