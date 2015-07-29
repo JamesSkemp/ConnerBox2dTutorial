@@ -46,8 +46,8 @@ public class ConnerBox2d extends ApplicationAdapter {
 		player = createBox(70, 140, 70, 70, false);
 		platform = createBox(70, 0, 140, 70, true);
 
-//		batch = new SpriteBatch();
-//		img = new Texture("badlogic.jpg");
+		batch = new SpriteBatch();
+		img = new Texture("images/alienGreen_square.png");
 	}
 
 	@Override
@@ -58,9 +58,9 @@ public class ConnerBox2d extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		box2dRenderer.render(world, camera.combined.scl(Constants.PPM));
-//		batch.begin();
-//		batch.draw(img, 0, 0);
-//		batch.end();
+		batch.begin();
+		batch.draw(img, player.getPosition().x * Constants.PPM - img.getWidth() / 2, player.getPosition().y * Constants.PPM - img.getHeight() / 2);
+		batch.end();
 	}
 
 	@Override
@@ -74,6 +74,7 @@ public class ConnerBox2d extends ApplicationAdapter {
 		super.dispose();
 		world.dispose();
 		box2dRenderer.dispose();
+		batch.dispose();
 	}
 
 	public void update(float deltaTime) {
@@ -82,6 +83,7 @@ public class ConnerBox2d extends ApplicationAdapter {
 
 		inputUpdate(deltaTime);
 		cameraUpdate(deltaTime);
+		batch.setProjectionMatrix(camera.combined);
 	}
 
 	public void inputUpdate(float deltaTime) {
@@ -119,7 +121,7 @@ public class ConnerBox2d extends ApplicationAdapter {
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = isStatic ? BodyDef.BodyType.StaticBody : BodyDef.BodyType.DynamicBody;
 		bodyDef.position.set(x / Constants.PPM, y / Constants.PPM);
-		bodyDef.fixedRotation = false;
+		bodyDef.fixedRotation = true;
 
 		body = world.createBody(bodyDef);
 
