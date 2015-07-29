@@ -7,11 +7,13 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.jamesrskemp.connerbox2d.utils.Constants;
 
 public class ConnerBox2d extends ApplicationAdapter {
 	private static final String TAG = ConnerBox2d.class.toString();
@@ -42,8 +44,6 @@ public class ConnerBox2d extends ApplicationAdapter {
 
 //		batch = new SpriteBatch();
 //		img = new Texture("badlogic.jpg");
-
-		Gdx.app.log(TAG, "asdf");
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public class ConnerBox2d extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		box2dRenderer.render(world, camera.combined);
+		box2dRenderer.render(world, camera.combined.scl(Constants.PPM));
 //		batch.begin();
 //		batch.draw(img, 0, 0);
 //		batch.end();
@@ -75,6 +75,19 @@ public class ConnerBox2d extends ApplicationAdapter {
 	public void update(float deltaTime) {
 		// 6 and 2 seem to be the standard for these.
 		world.step(1 / 60f, 6, 2);
+
+		cameraUpdate(deltaTime);
+	}
+
+	public void cameraUpdate(float deltaTime) {
+		Vector3 position = camera.position;
+		position.x = player.getPosition().x * Constants.PPM;
+		position.y = player.getPosition().y * Constants.PPM;
+		camera.position.set(position);
+
+		camera.update();
+
+//		Gdx.app.log(TAG, "Camera position " + camera.position);
 	}
 
 	public Body createPlayer() {
@@ -89,7 +102,7 @@ public class ConnerBox2d extends ApplicationAdapter {
 
 		PolygonShape shape = new PolygonShape();
 		// Box2D will double what we pass for the size.
-		shape.setAsBox(32 / 2, 32 / 2);
+		shape.setAsBox(32 / 2 / Constants.PPM, 32 / 2 / Constants.PPM);
 
 		body.createFixture(shape, 1.0f);
 
