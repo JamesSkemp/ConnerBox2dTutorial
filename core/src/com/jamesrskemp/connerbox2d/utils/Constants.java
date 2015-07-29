@@ -7,5 +7,5 @@ public final class Constants {
 	/**
 	 * Pixels per meter, to better work with Box2d.
 	 */
-	public static final float PPM = 32;
+	public static final float PPM = 70;
 }

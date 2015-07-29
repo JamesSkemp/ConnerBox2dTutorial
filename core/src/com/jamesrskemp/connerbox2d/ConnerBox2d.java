@@ -41,8 +41,8 @@ public class ConnerBox2d extends ApplicationAdapter {
 		world = new World(new Vector2(0, -9.8f), false);
 		box2dRenderer = new Box2DDebugRenderer();
 
-		player = createBox(32, 128, 32, 32, false);
-		platform = createBox(32, 32, 64, 32, true);
+		player = createBox(70, 140, 70, 70, false);
+		platform = createBox(70, 0, 140, 70, true);
 
 //		batch = new SpriteBatch();
 //		img = new Texture("badlogic.jpg");
