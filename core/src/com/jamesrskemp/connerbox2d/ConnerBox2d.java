@@ -7,6 +7,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -30,6 +33,9 @@ public class ConnerBox2d extends ApplicationAdapter {
 
 	SpriteBatch batch;
 	Texture img;
+
+	OrthogonalTiledMapRenderer tiledMapRenderer;
+	TiledMap map;
 	
 	@Override
 	public void create () {
@@ -43,11 +49,14 @@ public class ConnerBox2d extends ApplicationAdapter {
 		world = new World(new Vector2(0, -9.8f), false);
 		box2dRenderer = new Box2DDebugRenderer();
 
-		player = createBox(70, 140, 70, 70, false);
-		platform = createBox(70, 0, 140, 70, true);
+		player = createBox(175, 210, 70, 70, false);
+		platform = createBox(70, 35, 280, 70, true);
 
 		batch = new SpriteBatch();
 		img = new Texture("images/alienGreen_square.png");
+
+		map = new TmxMapLoader().load("images/tilemap/wood.tmx");
+		tiledMapRenderer = new OrthogonalTiledMapRenderer(map);
 	}
 
 	@Override
@@ -58,6 +67,9 @@ public class ConnerBox2d extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		box2dRenderer.render(world, camera.combined.scl(Constants.PPM));
+
+		tiledMapRenderer.render();
+
 		batch.begin();
 		batch.draw(img, player.getPosition().x * Constants.PPM - img.getWidth() / 2, player.getPosition().y * Constants.PPM - img.getHeight() / 2);
 		batch.end();
@@ -75,6 +87,8 @@ public class ConnerBox2d extends ApplicationAdapter {
 		world.dispose();
 		box2dRenderer.dispose();
 		batch.dispose();
+		map.dispose();
+		tiledMapRenderer.dispose();
 	}
 
 	public void update(float deltaTime) {
@@ -83,6 +97,7 @@ public class ConnerBox2d extends ApplicationAdapter {
 
 		inputUpdate(deltaTime);
 		cameraUpdate(deltaTime);
+		tiledMapRenderer.setView(camera);
 		batch.setProjectionMatrix(camera.combined);
 	}
 
