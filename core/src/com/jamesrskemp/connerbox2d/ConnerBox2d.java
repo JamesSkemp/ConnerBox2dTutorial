@@ -18,6 +18,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.jamesrskemp.connerbox2d.utils.Constants;
+import com.jamesrskemp.connerbox2d.utils.TiledMapUtil;
 
 public class ConnerBox2d extends ApplicationAdapter {
 	private static final String TAG = ConnerBox2d.class.toString();
@@ -57,6 +58,9 @@ public class ConnerBox2d extends ApplicationAdapter {
 
 		map = new TmxMapLoader().load("images/tilemap/wood.tmx");
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(map);
+
+		// Add the collision layer from the TiledMap.
+		TiledMapUtil.parseTiledObjectLayer(world, map.getLayers().get("collision-layer").getObjects());
 	}
 
 	@Override
